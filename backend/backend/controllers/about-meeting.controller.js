@@ -7,9 +7,10 @@ exports.create = async (req, res, next) => {
     let { meettype, meetapp, location, topic, meetdate, meettime, agendaData } = req.body
     
     try {
-        
+        const id = uuid.v4()
+
         let meetingInfo = new Meeting()
-        meetingInfo.meeting_id = uuid.v4()
+        meetingInfo.meeting_id = id
         meetingInfo.meettype = meettype
         meetingInfo.meetapp = meetapp
         meetingInfo.location = location
@@ -20,16 +21,17 @@ exports.create = async (req, res, next) => {
         
         for(let agenlist of agendaData){
             let agendaInfo = new Agenda()
-            agendaInfo.meeting_id = meetingInfo.meeting_id
+            agendaInfo.meeting_id = id
             agendaInfo.agenda_id = uuid.v4()
             agendaInfo.agentopic = agenlist.agentopic
             agendaInfo.agendetail = agenlist.agendetail
             agendaInfo.agentime = agenlist.agentime
             await Agenda.create(agendaInfo);
-        }   
+        }
         
         res.status(200).json({
-            message:"Meeting create success"
+            message:"Meeting create success",
+            "meet_id": meetingInfo.meeting_id,
         })
     }
     catch (error) {
@@ -40,4 +42,46 @@ exports.create = async (req, res, next) => {
         }
         next(error);
     }
+    
 }
+
+exports.get = async (req, res, next) => {
+
+    try{
+        let [userInfo] = await Meeting.get();
+        res.status(200).json({ 
+            message:"Meeting get success",
+            result: userInfo
+        })
+    }
+    catch (error) {
+        if(!error.statusCode) {
+            error.error = error
+            error.statusCode = 500;
+            error.message = "Meeting get failed";
+        }
+        next(error);
+    }
+}
+
+exports.delete = async (req, res, next) => {
+    let {meeting_id} = req.body
+
+    try{
+        await Meeting.delete(meeting_id);
+        res.status(200).json({
+            message:"Meeting delete success",
+            
+        })
+    }
+    catch (error) {
+        if(!error.statusCode) {
+            error.error = error
+            error.statusCode = 500;
+            error.message = "Meeting delete failed";
+        }
+        next(error);
+
+    }
+}
+

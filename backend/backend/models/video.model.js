@@ -22,6 +22,7 @@ module.exports = class video {
 
     constructor(dataInfo) {
         this.video_id = dataInfo?.video_id || ""
+        this.meeting_id = dataInfo?.meeting_id || ""
         this.user_id = dataInfo?.user_id || ""
         this.payment_id = dataInfo?.payment_id || ""
         this.title = dataInfo?.title || ""

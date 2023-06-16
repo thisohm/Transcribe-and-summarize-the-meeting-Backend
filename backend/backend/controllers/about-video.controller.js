@@ -26,11 +26,11 @@ ffmpeg.setFfprobePath(ffprobePath);
 
 const { uploadFileForAPI } = require("../helpers/file-upload");
 const fileOperation = require("../helpers/file-operation")
+
 const Video = require("../models/video.model.js");
 const SecToTime = require('../helpers/sec-to-time');
 
 const roundedDurationStep = 15;  // second
-
 
 exports.searchList = async (req, res, next) => {
     let { sort_by } = req.body;
@@ -176,7 +176,7 @@ exports.update = async (req, res, next) => {
 }
 
 exports.create = async (req, res, next) => {
-    let { title } = req.body
+    let { title ,meeting_id} = req.body
     let { user_id, org_id, role_id, permission } = req.user
     if (req.file == undefined) {
         return res.status(400).send({ message: "Please upload a file!" });
@@ -202,6 +202,7 @@ exports.create = async (req, res, next) => {
                         let ext = path.extname(req.file.filename);
                         let dataInfo = new Video("");
                         dataInfo.video_id = uuid.v4();
+                        dataInfo.meeting_id = meeting_id
                         dataInfo.user_id = user_id
                         dataInfo.title = title;
                         dataInfo.created_timestamp = new Date(Date.now())
@@ -226,6 +227,7 @@ exports.create = async (req, res, next) => {
                     await uploadFileForAPI(req, res);
                     let dataInfo = new Video("");
                     dataInfo.video_id = uuid.v4();
+                    dataInfo.meeting_id = meeting_id
                     dataInfo.user_id = user_id
                     dataInfo.title = title;
                     dataInfo.created_timestamp = new Date(Date.now())

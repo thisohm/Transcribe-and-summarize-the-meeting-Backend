@@ -11,7 +11,7 @@ module.exports = class meeting {
         this.meetdate = dataInfo?.meetdate || ""
         this.meettime = dataInfo?.meettime || ""
     }
-
+    
     static create(dataInfo) {
         return db.query(`
             INSERT
@@ -21,6 +21,20 @@ module.exports = class meeting {
         )
     }
 
-    //agenda
+    static get() {
+        return db.query(`
+            SELECT  *
+            FROM    meeting`,
+        )
+    }
+
+    static delete(meeting_id) {
+        return db.query(`
+            DELETE  
+            FROM    meeting
+            WHERE   meeting_id = ?` ,
+            [meeting_id]
+        )
+    }
 
 }
