@@ -17,6 +17,7 @@ exports.create = async (req, res, next) => {
         meetingInfo.topic = topic
         meetingInfo.meetdate = meetdate
         meetingInfo.meettime = meettime
+        meetingInfo.created_timestamp = new Date(Date.now())
         await Meeting.create(meetingInfo);
         
         for(let agenlist of agendaData){
@@ -59,6 +60,28 @@ exports.get = async (req, res, next) => {
             error.error = error
             error.statusCode = 500;
             error.message = "Meeting get failed";
+        }
+        next(error);
+    }
+}
+
+exports.getMeetById = async (req, res, next) => {
+    let {meeting_id} = req.body
+
+    try{
+        let [userInfo1] = await Meeting.getByMeetId(meeting_id);
+        let [userInfo2] = await Agenda.getByMeetId(meeting_id);
+        res.status(200).json({
+            message:"Meeting and Agenda get by meeting_id success",
+            meeting: userInfo1,
+            agenda: userInfo2
+        })
+    }
+    catch (error) {
+        if(!error.statusCode) {
+            error.error = error
+            error.statusCode = 500;
+            error.message = "Meeting get by meeting_id failed";
         }
         next(error);
     }

@@ -33,6 +33,10 @@ router.post('/search- keyword', video.searchVideoKeyword); //edit
 
 router.post('/create', generateFileOperation(), fileUpload.uploadFileForUI(), authorize(), video.create); 
 
+router.get('/all-list', video.get) //get all video
+
+router.post('/meet-id-list', video.getVideoByMeetId) //get video by meeting id
+
 router.post('/status', video.statusVideo); //search video by status
 
 router.post('/update', authorize(), video.update);

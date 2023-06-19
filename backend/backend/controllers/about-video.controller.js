@@ -29,6 +29,7 @@ const fileOperation = require("../helpers/file-operation")
 
 const Video = require("../models/video.model.js");
 const SecToTime = require('../helpers/sec-to-time');
+const SecToTimeHMS = require('../helpers/sec-to-time');
 
 const roundedDurationStep = 15;  // second
 
@@ -254,6 +255,50 @@ exports.create = async (req, res, next) => {
         }
         next(err);
     }
+}
+
+exports.get = async (req, res, next) => {
+    try{
+        let [dataInfo] = await Video.get();
+        
+        for (let element of dataInfo) {
+            element.duration = SecToTime(element.duration)
+        }
+        res.status(200).json({ 
+            message:"Video get success",
+            result: dataInfo
+        })
+    }
+    catch (error) {
+        if(!error.statusCode) {
+            error.error = error
+            error.statusCode = 500;
+            error.message = "Video get failed";
+        }
+        next(error);
+    }
+}
+
+exports.getVideoByMeetId = async (req, res, next) => {
+    let {meeting_id}  = req.body
+    
+    try{
+        let [dataInfo] = await Video.getVideoByMeetId(meeting_id)
+
+        res.status(200).json({ 
+            message:"Video get success",
+            result: dataInfo
+        })
+    }
+    catch (error) {
+        if(!error.statusCode) {
+            error.error = error
+            error.statusCode = 500;
+            error.message = "Video get by meeting_id failed";
+        }
+        next(error);
+    }
+
 }
 
 exports.getImage = async (req, res, next) => {

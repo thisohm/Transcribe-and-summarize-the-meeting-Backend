@@ -44,6 +44,24 @@ module.exports = class video {
             [dataInfo])
     }
 
+    //get all-video
+    static get() {
+        return db.query(`
+            SELECT  *
+            FROM    video`,
+        )
+    }
+
+    //get video by meeting_id
+    static getVideoByMeetId(meeting_id) {
+        return db.query(`
+            SELECT  *
+            FROM    video
+            WHERE   meeting_id = ? `,
+            [meeting_id]
+        )
+    }
+
     static update(dataInfo, user_id) {
         return db.query(`
         UPDATE  video
