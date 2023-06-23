@@ -11,6 +11,8 @@ module.exports = class meeting {
         this.meetdate = dataInfo?.meetdate || ""
         this.meettime = dataInfo?.meettime || ""
         this.created_timestamp = dataInfo?.created_timestamp || ""
+        this.status = dataInfo?.status || 0
+        
     }
     
     static create(dataInfo) {
@@ -26,7 +28,37 @@ module.exports = class meeting {
     static get() {
         return db.query(`
             SELECT  *
-            FROM    meeting`,
+            FROM    meeting
+            WHERE   status = 1`,
+        )
+    }
+
+    //get trash
+    static getTrash() {
+        return db.query(`
+            SELECT  *
+            FROM    meeting
+            WHERE   status = 0`,
+        )
+    }
+
+    //change status 1 -> 0
+    static changeToZero(meeting_id) {
+        return db.query(`
+            UPDATE  meeting
+            SET     status = 0
+            WHERE   meeting_id = ?`,
+            [meeting_id]
+        )
+    }
+
+    //change status 0 -> 1
+    static changeToOne(meeting_id) {
+        return db.query(`
+            UPDATE  meeting
+            SET     status = 1
+            WHERE   meeting_id = ?`,
+            [meeting_id]
         )
     }
 

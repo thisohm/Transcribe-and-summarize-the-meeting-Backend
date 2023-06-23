@@ -7,8 +7,14 @@ router.post('/create', meeting.create); //create meeting
 
 router.get('/list', meeting.get); //get meeting
 
+router.get('/list-trash', meeting.getTrash); // get trash
+
 router.post('/meet-id-list', meeting.getMeetById); //get meeting by meeting id
 
-router.delete('/delete', meeting.delete) //delete meeting
+router.post('/move-to-trash', meeting.changeToZero); //move meeting to trash
+
+router.post('/recover-to-meet', meeting.changeToOne); //recover meeting from trash
+
+router.delete('/delete', meeting.delete); //delete meeting
 
 module.exports = router

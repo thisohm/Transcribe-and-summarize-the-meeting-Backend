@@ -18,6 +18,7 @@ exports.create = async (req, res, next) => {
         meetingInfo.meetdate = meetdate
         meetingInfo.meettime = meettime
         meetingInfo.created_timestamp = new Date(Date.now())
+        meetingInfo.status = 1
         await Meeting.create(meetingInfo);
         
         for(let agenlist of agendaData){
@@ -46,8 +47,42 @@ exports.create = async (req, res, next) => {
     
 }
 
-exports.get = async (req, res, next) => {
+exports.changeToZero = async (req, res, next) => {
+    let { meeting_id } = req.body
+    try{ 
+        await Meeting.changeToZero(meeting_id)
+        res.status(200).json({
+            message:"Change status 1->0 success"
+        })
+    }
+    catch (error) {
+        if(!error.statusCode) {
+            error.error = error
+            error.statusCode = 500;
+            error.message = "Change status 1->0 failed";
+        }
+        next(error);
+    }
+}
+exports.changeToOne = async (req, res, next) => {
+    let { meeting_id } = req.body
+    try{ 
+        await Meeting.changeToOne(meeting_id)
+        res.status(200).json({
+            message:"Change status 0->1 success"
+        })
+    }
+    catch (error) {
+        if(!error.statusCode) {
+            error.error = error
+            error.statusCode = 500;
+            error.message = "Change status 0->1 failed";
+        }
+        next(error);
+    }
+}
 
+exports.get = async (req, res, next) => {
     try{
         let [userInfo] = await Meeting.get();
         res.status(200).json({ 
@@ -63,6 +98,25 @@ exports.get = async (req, res, next) => {
         }
         next(error);
     }
+}
+
+exports.getTrash = async (req, res, next) => {
+    try{
+        let [userInfo] = await Meeting.getTrash();
+        res.status(200).json({
+            message:"Trash get success",
+            result: userInfo
+        })
+    }
+    catch (error) {
+        if(!error.statusCode) {
+            error.error = error
+            error.statusCode = 500;
+            error.message = "Meeting get failed";
+        }
+        next(error);
+    }
+
 }
 
 exports.getMeetById = async (req, res, next) => {
@@ -93,8 +147,7 @@ exports.delete = async (req, res, next) => {
     try{
         await Meeting.delete(meeting_id);
         res.status(200).json({
-            message:"Meeting delete success",
-            
+            message:"Meeting delete success"        
         })
     }
     catch (error) {
