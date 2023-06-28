@@ -152,6 +152,7 @@ exports.update = async (req, res, next) => {
             let [videoItem] = await Video.getVideoById(body.video_id);
             let dataInfo = new Video(videoItem[0]);
             dataInfo.video_id = body.video_id;
+            dataInfo.meeting_id = body.meeting_id ? body.meeting_id : videoItem[0].meeting_id;
             dataInfo.title = body.title ? body.title : videoItem[0].title;
             dataInfo.video_path = body.video_path ? body.video_path : videoItem[0].video_path;
             dataInfo.audio_path = body.audio_path ? body.audio_path : videoItem[0].audio_path;

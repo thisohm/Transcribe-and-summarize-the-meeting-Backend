@@ -65,7 +65,8 @@ module.exports = class video {
     static update(dataInfo, user_id) {
         return db.query(`
         UPDATE  video
-        SET     title = ?,
+        SET     meeting_id = ?,
+                title = ?,
                 image_path = ?,
                 video_path = ?,
                 audio_path = ?,
@@ -75,7 +76,8 @@ module.exports = class video {
                 duration = ?,
                 deleted_timestamp = ?
         WHERE   video_id = ?;`,
-        [
+        [   
+            dataInfo.meeting_id,
             dataInfo.title,
             dataInfo.image_path,
             dataInfo.video_path,

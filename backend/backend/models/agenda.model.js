@@ -20,12 +20,13 @@ module.exports = class agenda {
     }
 
     static getByMeetId(meeting_id) {
-        return db.query(`
-            SELECT  *
-            FROM    agenda
-            WHERE   meeting_id = ?`,
-            [meeting_id]
-        )
+            return db.query(`
+                SELECT          *
+                FROM            agenda
+                WHERE           meeting_id = ?
+                ORDER BY        agentime ASC`,
+                [meeting_id]
+            )
     }
 
 }
