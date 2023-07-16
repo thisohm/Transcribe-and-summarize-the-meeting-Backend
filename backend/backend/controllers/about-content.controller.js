@@ -137,8 +137,10 @@ exports.getContent = async (req, res, next) => {
     else if (video_id) {
         try {
             let [content] = await Subtitle.getContentByVideoId(video_id);
-            //content[0].start_time = SecToTime(content[0].start_time)
-            //content[0].end_time = SecToTime(content[0].end_time)
+            for (let element of content) {
+                element.start_time = SecToTime(element.start_time)
+                element.end_time = SecToTime(element.end_time)
+            }
             res.status(200).json(content);
         } catch (err) {
             console.log(err);

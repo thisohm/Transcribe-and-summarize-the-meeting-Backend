@@ -15,7 +15,7 @@
 // The following limitations to your Source Code License shall apply:
 //
 module.exports = SecToTime;
-module.exports = SecToTimeHMS;
+//module.exports = SecToTimeHMS;
 
 //Change seconds to hh:mm:ss.ms
 function SecToTime(timeInSeconds) {
@@ -29,6 +29,7 @@ function SecToTime(timeInSeconds) {
     return pad(hours, 2) + ':' + pad(minutes, 2) + ':' + pad(seconds, 2) + '.' + pad(milliseconds, 3);
 }
 
+/*
 //Change seconds to hh:mm:ss
 function SecToTimeHMS(timeInSeconds) {
     var pad = function(num, size) { return ('000' + num).slice(size * -1); },
@@ -40,4 +41,4 @@ function SecToTimeHMS(timeInSeconds) {
 
     return pad(hours, 2) + ':' + pad(minutes, 2) + ':' + pad(seconds, 2);
 }
-
+*/
