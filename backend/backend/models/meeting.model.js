@@ -24,6 +24,28 @@ module.exports = class meeting {
         )
     }
 
+    static edit(dataInfo,meeting_id) {
+        return db.query(`
+            UPDATE  meeting
+            SET     meettype = ?,
+                    meetapp = ?,
+                    location = ?,
+                    topic = ?,
+                    meetdate = ?,
+                    meettime = ?
+            WHERE   meeting_id = ?`,
+            [
+                dataInfo.meettype,
+                dataInfo.meetapp,
+                dataInfo.location,
+                dataInfo.topic,
+                dataInfo.meetdate,
+                dataInfo.meettime,
+                meeting_id
+            ]
+        )
+    }
+
     //get all
     static get() {
         return db.query(`

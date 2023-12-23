@@ -26,6 +26,20 @@ module.exports = class subtitle {
         this.end_time = dataInfo.end_time || 0
     }
 
+    static createSubtitle(dataInfo, video_id) {
+        return db.query(`
+            INSERT INTO     subtitle
+            SET             sub_id = ?, text = ?,
+                            start_time = ?, end_time = ?,
+                            video_id = ?`,
+            [   
+                dataInfo.sub_id, dataInfo.text, 
+                dataInfo.start_time, dataInfo.end_time,
+                video_id
+            ]
+        )
+    }
+
     //findBySubtitle
     static searchByword(user_id, org_id, video_id, keyword) {
         keyword = '%' + keyword + '%';
@@ -67,19 +81,7 @@ module.exports = class subtitle {
         )
     }
     
-    static createSubtitle(dataInfo, video_id) {
-        return db.query(`
-            INSERT INTO     subtitle
-            SET             sub_id = ?, text = ?,
-                            start_time = ?, end_time = ?,
-                            video_id = ?`,
-            [   
-                dataInfo.sub_id, dataInfo.text, 
-                dataInfo.start_time, dataInfo.end_time,
-                video_id
-            ]
-        )
-    }
+    
 
     static getContentByVideoId(video_id) {
         return db.query(`

@@ -201,4 +201,3 @@ if __name__ == '__main__':
 
     for thr in threads_arr:         # let them all start before joining
         thr.join()
-

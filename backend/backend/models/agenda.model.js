@@ -19,6 +19,15 @@ module.exports = class agenda {
         )
     }
 
+    static delete(meeting_id){
+        return db.query(`
+            DELETE
+            FROM    agenda
+            WHERE   meeting_id = ?`,
+            [meeting_id]
+        )
+    }
+
     static getByMeetId(meeting_id) {
             return db.query(`
                 SELECT          *
